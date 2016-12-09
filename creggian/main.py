@@ -37,3 +37,7 @@ def leftjoin_overlap_bed(x, y, x_strand=None, y_strand=None, o_type="any"):
 
 def to_tsv_line(data):
     return '\t'.join(str(d) for d in data)
+
+
+def split_tsv(x):
+    return x.split("\t")
