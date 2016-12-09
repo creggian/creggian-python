@@ -13,7 +13,7 @@ def overlaps_any(x, y, x_strand=None, y_strand=None):
     return False
 
 
-def left_overlap_bed(x, y, x_strand=None, y_strand=None, o_type="any"):
+def leftjoin_overlap_bed(x, y, x_strand=None, y_strand=None, o_type="any"):
     """
     :param x: tuple
     :param y: list of tuples
@@ -33,3 +33,7 @@ def left_overlap_bed(x, y, x_strand=None, y_strand=None, o_type="any"):
         return [x + y[i] for i in idx]
     else:
         return x
+
+
+def to_tsv_line(data):
+    return '\t'.join(str(d) for d in data)
