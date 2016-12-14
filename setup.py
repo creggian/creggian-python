@@ -8,5 +8,5 @@ setup(
     license='MIT',
     author='Claudio Reggiani',
     author_email='me@claudioreggiani.com',
-    description='Collection of python functions'
+    description='Collection of python functions', requires=['findspark']
 )

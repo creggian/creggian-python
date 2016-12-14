@@ -2,60 +2,38 @@ def which(x):
     return [index for index, item in enumerate(x) if item]
 
 
-def overlaps_any(x, y, x_strand=None, y_strand=None):
-    if type(y) == tuple:
-        if x_strand is None and y_strand is None:
-            return x[1] <= y[2] and y[1] <= x[2] and x[0] == y[0]
-        else:
-            return x[1] <= y[2] and y[1] <= x[2] and x[0] == y[0] and x[x_strand] == y[y_strand]
-    if type(y) == list:
-        return any([overlaps_any(x, z, x_strand=x_strand, y_strand=y_strand) for z in y])
-    return False
-
-
-def leftjoin_overlap_bed(x, y, x_strand=None, y_strand=None, o_type="any"):
+def bin_coords(chrom, start, end, bin_size=10000):
     """
-    :param x: tuple
-    :param y: list of tuples
-    :param x_strand: integer
-    :param y_strand: integer
-    :param o_type: string
-    :return:
-    """
-    if o_type == "any":
-        idx = which([overlaps_any(x, z, x_strand=x_strand, y_strand=y_strand) for z in y])
-    else:
-        raise ValueError("'o_type' parameter must be: 'any'")
+    chrom: string
+    start: int
+    end: int
 
-    if len(idx) == 1:
-        return x + y[idx[0]]
-    elif len(idx) > 1:
-        return [x + y[i] for i in idx]
-    else:
-        return x
+    hg19 length = 3,137,161,264
+    chrom sizes = https://genome.ucsc.edu/goldenpath/help/hg19.chrom.sizes
+    """
+    key = chrom[3:]  # 'chr1' => '1'
+    min_bin = start / bin_size
+    max_bin = end / bin_size
+    r = range(min_bin, max_bin + 1)
+
+    return [key + "." + str(x) for x in r]
+
+
+def to_kv(x, bin_func=bin_coords, bin_size=10000):
+    x_key = bin_func(x[0], x[1], x[2], bin_size)
+    return [(k, x) for k in x_key]
 
 
 def to_tsv_line(data):
     return '\t'.join(str(d) for d in data)
 
 
-def split_tsv(x):
-    return x.split("\t")
-
-
-def split_cage_entry(x):
-    coords, strand = x.split(",")
-    chrom, start_end = coords.split(":")
-    start, end = start_end.split("..")
-    return chrom, int(start), int(end), strand
-
-
-def parse_narrow_peak(x):
-    return (x[0], int(x[1]), int(x[2]), x[3], int(x[4]), x[5], float(x[6]), float(x[7]), float(x[8]), int(x[9])) + tuple(x[10:],)
-
-
-def parse_tfbs_ucsc(x):
-    return (x[0], int(x[1]), int(x[2]), x[3], int(x[4])) + tuple(x[5:],)
-
-
-
+def flatten_list(l):
+    ret = []
+    for elem in l:
+        if type(elem) is list:
+            for elem2 in elem:
+                ret = ret + [elem2]
+        else:
+            ret = ret + [elem]
+    return ret
