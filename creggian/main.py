@@ -2,7 +2,7 @@ def which(x):
     return [index for index, item in enumerate(x) if item]
 
 
-def bin_coords(chrom, start, end, bin_size=10000):
+def coords2bin(chrom, start, end, bin_size=10000):
     """
     chrom: string
     start: int
@@ -19,7 +19,19 @@ def bin_coords(chrom, start, end, bin_size=10000):
     return [key + "." + str(x) for x in r]
 
 
-def to_kv(x, bin_func=bin_coords, bin_size=10000):
+def bin2coords(bin, bin_size=10000):
+    chrom_id, bin_num_str = bin.split(".")
+
+    chrom = "chr" + chrom_id
+    bin_num = int(bin_num_str)
+
+    start = bin_num * bin_size
+    end = (((bin_num + 1) * bin_size) - 1)
+
+    return chrom, start, end
+
+
+def to_kv(x, bin_func=coords2bin, bin_size=10000):
     x_key = bin_func(x[0], x[1], x[2], bin_size)
     return [(k, x) for k in x_key]
 

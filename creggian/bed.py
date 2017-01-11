@@ -43,13 +43,29 @@ def leftjoin_overlap(x, y, x_strand=None, y_strand=None, o_type="any"):
         return x  # tuple
 
 
-def leftjoin_overlap_window(x, y, x_strand=None, y_strand=None, o_type="any", bin_func=bin_coords, bin_size=10000):
+def leftjoin_overlap_window(x, y, x_strand=None, y_strand=None, o_type="any", bin_func=coords2bin, bin_size=10000):
     """
     distributed leftjoin. It has some redundant tuples, because
     regions may fall in several bins.
 
     x, y are two BED RDDs
     doc: http://spark.apache.org/docs/2.0.2/api/python/pyspark.html
+
+    Example
+        def hash_key_x(x):
+            key = "."
+            if (14 < len(x)):
+                key = str(x[14]) # this must exists
+            #if (18 < len(x)):
+            #    key = key + "." + str(x[18])
+            return key
+
+        res = leftjoin_overlap_window(H3K4me3_AD_wCAGE, tfbs)
+        res_unique = res \
+            .map(lambda x: (hash_key_x(x), x)) \
+            .filter(lambda x: x[0] != ".") \
+            .reduceByKey(lambda x, y: x) \
+            .map(lambda x: x[1][0:14])
     """
 
     # append unique id, uid

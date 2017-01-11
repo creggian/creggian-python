@@ -47,7 +47,7 @@ class TestBed(unittest.TestCase):
         rdd1 = self.sc.parallelize([('chr1', 10, 20), ('chr2', 10, 20), ('chr2', 100, 200)])
         rdd2 = self.sc.parallelize([('chr11', 10, 20), ('chr2', 50, 150), ('chr2', 150, 160), ('chr2', 155, 265)])
 
-        result = leftjoin_overlap_window(rdd1, rdd2, bin_func=bin_coords, bin_size=10000)
+        result = leftjoin_overlap_window(rdd1, rdd2, bin_func=coords2bin, bin_size=10000)
 
         output = result.collect()
 
