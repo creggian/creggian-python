@@ -49,3 +49,29 @@ def flatten_list(l):
         else:
             ret = ret + [elem]
     return ret
+
+
+def merged_bin(bins):
+    b = bins
+    b.sort()
+
+    # 'a' is chromosome, 'b' is the bin id
+    def mydef(x):
+        a, b = x.split(".")
+        return [a, int(b)]
+
+    bb=[mydef(k) for k in b]
+
+    results = []
+    bin_group = -1
+    for idx, val in enumerate(bb):
+        if bin_group < 0:
+            bin_group = 0
+        else:
+            prev = bb[idx - 1]
+            if (val[0] != prev[0]) or (val[1] != (prev[1] + 1)):
+                bin_group += 1
+        t = (val[0], val[1], bin_group)
+        results.append(t)
+
+    return results

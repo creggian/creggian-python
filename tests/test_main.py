@@ -13,7 +13,15 @@ class TestMain(unittest.TestCase):
     def test_coords2bin(self):
         self.assertEqual(coords2bin('chr4', 10, 20, bin_size=100), ['4.0'])
         self.assertEqual(coords2bin('chrX', 11, 200, bin_size=100), ['X.0', 'X.1', 'X.2'])
+        self.assertEqual(coords2bin('chrQ', 8, 20, bin_size=3), ['Q.2', 'Q.3', 'Q.4', 'Q.5', 'Q.6'])
+        self.assertEqual(coords2bin('chrQ', 9, 20, bin_size=3), ['Q.3', 'Q.4', 'Q.5', 'Q.6'])
         self.assertEqual(coords2bin('chrQ', 10, 20, bin_size=3), ['Q.3', 'Q.4', 'Q.5', 'Q.6'])
+        self.assertEqual(coords2bin('chrQ', 11, 20, bin_size=3), ['Q.3', 'Q.4', 'Q.5', 'Q.6'])
+        self.assertEqual(coords2bin('chrQ', 12, 20, bin_size=3), ['Q.4', 'Q.5', 'Q.6'])
+        self.assertEqual(coords2bin('chrQ', 8, 21, bin_size=3), ['Q.2', 'Q.3', 'Q.4', 'Q.5', 'Q.6', 'Q.7'])
+        self.assertEqual(coords2bin('chrQ', 8, 22, bin_size=3), ['Q.2', 'Q.3', 'Q.4', 'Q.5', 'Q.6', 'Q.7'])
+        self.assertEqual(coords2bin('chrQ', 8, 23, bin_size=3), ['Q.2', 'Q.3', 'Q.4', 'Q.5', 'Q.6', 'Q.7'])
+        self.assertEqual(coords2bin('chrQ', 8, 24, bin_size=3), ['Q.2', 'Q.3', 'Q.4', 'Q.5', 'Q.6', 'Q.7', 'Q.8'])
 
     def test_bin2coords(self):
         self.assertEqual(bin2coords('1.1', bin_size=10), ('chr1', 10, 19))
@@ -37,6 +45,10 @@ class TestMain(unittest.TestCase):
         a = [('chr1', 10, 20), 1, 'str', [1, 2, 'test']]
         self.assertEqual(flatten_list(a), [('chr1', 10, 20), 1, 'str', 1, 2, 'test'])
 
+    def test_merged_bin(self):
+        bins = ["1.10", "1.11", "1.13", "1.20", "10.10", "10.13", "10.14", "11.21", "12.21"]
+        bins.sort()
+        self.assertEqual(merged_bin(bins), [('1', 10, 0), ('1', 11, 0), ('1', 13, 1), ('1', 20, 2), ('10', 10, 3), ('10', 13, 4), ('10', 14, 4), ('11', 21, 5), ('12', 21, 6)])
 
 if __name__ == '__main__':
     unittest.main()
