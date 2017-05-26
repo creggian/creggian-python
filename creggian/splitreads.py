@@ -1,13 +1,13 @@
+import re
 from creggian.bed import *
+from itertools import compress
 
 
 def cigar_get_int(x):
-    import re
     return int(re.findall('[0-9]+', x)[0])
 
 
 def cigar_get_letter(x):
-    import re
     return str(re.findall('[A-Z]+', x)[0])
 
 
@@ -119,8 +119,6 @@ def get_split_reads(read_chr, read_start, read_end, read_cigar, qchr, qstart, qe
     :param qend:        target end
     :return:            [(chr, start, end), (chr, start, end), ...]
     """
-    import re
-    from itertools import compress
 
     read_cigar_split = re.findall('[0-9]+[A-Z]{1}', read_cigar)
 
