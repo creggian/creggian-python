@@ -44,6 +44,13 @@ class TestMain(unittest.TestCase):
     def test_flatten_list(self):
         a = [('chr1', 10, 20), 1, 'str', [1, 2, 'test']]
         self.assertEqual(flatten_list(a), [('chr1', 10, 20), 1, 'str', 1, 2, 'test'])
+        self.assertEqual(flatten_list([[], []]), [])
+        self.assertEqual(flatten_list([['test'], []]), ['test'])
+        self.assertEqual(flatten_list([['test'], 2]), ['test', 2])
+        self.assertEqual(flatten_list([]), [])
+        self.assertEqual(flatten_list([2]), [2])
+        self.assertEqual(flatten_list([[]]), [])
+        self.assertEqual(flatten_list([[2]]), [2])
 
     def test_merged_bin(self):
         bins = ["1.10", "1.11", "1.13", "1.20", "10.10", "10.13", "10.14", "11.21", "12.21"]

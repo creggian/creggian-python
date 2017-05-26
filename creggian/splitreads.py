@@ -1,6 +1,16 @@
 from creggian.bed import *
 
 
+def cigar_get_int(x):
+    import re
+    return int(re.findall('[0-9]+', x)[0])
+
+
+def cigar_get_letter(x):
+    import re
+    return str(re.findall('[A-Z]+', x)[0])
+
+
 def max_y(qstart, qend, sstart, send, y):
     """
     retrieve the max 'y' value of those subject regions
@@ -129,12 +139,6 @@ def get_split_reads(read_chr, read_start, read_end, read_cigar, qchr, qstart, qe
     cigar_letters_valid = ['D', 'M', 'N']
     if not all([x in cigar_letters_valid for x in read_cigar_split_letters]):
         raise Exception("cigar_letters_valid !! " + str(read_cigar))
-
-    def cigar_get_int(x):
-        return int(re.findall('[0-9]+', x)[0])
-
-    def cigar_get_letter(x):
-        return str(re.findall('[A-Z]+', x)[0])
 
     read_splits_chr = [read_chr]
     read_splits_start = [read_start]
