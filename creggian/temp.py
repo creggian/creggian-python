@@ -3,20 +3,18 @@ from creggian.splitreads import *
 
 def pool_func(args):
     target = args[0]
-    param = args[1]
-
     qchr = target[0]
     qstart = int(target[1])
     qend = int(target[2])
 
+    param = args[1]
     read_chr, read_start, read_end, read_cigar = param
 
     ret = []
     if (read_start <= qend) and (read_end >= qstart) and (read_chr == qchr):
-        #split_reads = get_split_reads(read_chr, read_start, read_end, read_cigar, qchr, qstart, qend)
-        #reduced_meta = [(qchr, qstart, qend) + x for x in split_reads]
-        #ret = reduced_meta
-        ret = []
+        split_reads = get_split_reads(read_chr, read_start, read_end, read_cigar, qchr, qstart, qend)
+        reduced_meta = [(qchr, qstart, qend) + x for x in split_reads]
+        ret = reduced_meta
     return ret
 
 
