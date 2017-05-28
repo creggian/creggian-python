@@ -30,7 +30,12 @@ def max_y(qstart, qend, sstart, send, y):
         raise RuntimeError('max_y function: qstart and qend parameters must have length 1')
 
     sro_query_bool = overlaps_any2(sstart, send, qstart, qend)
-    return max([y[idx] for idx, value in enumerate(sro_query_bool) if value])
+    ys = [y[idx] for idx, value in enumerate(sro_query_bool) if value]
+
+    if len(ys) > 0:
+        return max(ys)
+    else:
+        return 0
 
 
 def reduced_regions(split_reads, qchr, qstart, qend, minypeak):

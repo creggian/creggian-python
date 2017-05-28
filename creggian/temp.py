@@ -13,9 +13,10 @@ def pool_func(args):
 
     ret = []
     if (read_start <= qend) and (read_end >= qstart) and (read_chr == qchr):
-        split_reads = get_split_reads(read_chr, read_start, read_end, read_cigar, qchr, qstart, qend)
-        reduced_meta = [(qchr, qstart, qend) + x for x in split_reads]
-        ret = reduced_meta
+        #split_reads = get_split_reads(read_chr, read_start, read_end, read_cigar, qchr, qstart, qend)
+        #reduced_meta = [(qchr, qstart, qend) + x for x in split_reads]
+        #ret = reduced_meta
+        ret = []
     return ret
 
 
